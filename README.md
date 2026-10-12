@@ -162,6 +162,47 @@ Halaman `/admin` hanya bisa dibuka admin. Di dalamnya ada statistik, pesanan ter
 
 ---
 
+## 🔎 Dokumentasi 5 Query Tinker
+
+Query dijalankan lewat `php artisan tinker` setelah database di-seed.
+
+```php
+use App\Models\{Product, User, Order};
+```
+
+### Query 1 — Menghitung jumlah produk
+```php
+Product::count()
+```
+![Tinker 1](screenshot/tinker-1.png)
+
+### Query 2 — Eager loading relasi `belongsTo`
+```php
+Product::with('category')->first()
+```
+![Tinker 2](screenshot/tinker-2.png)
+
+### Query 3 — Relasi `hasMany` user → orders
+```php
+User::where('email','user@example.com')->first()->orders->count()
+```
+![Tinker 3](screenshot/tinker-3.png)
+
+### Query 4 — Agregasi relasi dengan `withSum`
+```php
+Order::withSum('items as total','price')->first()
+```
+![Tinker 4](screenshot/tinker-4.png)
+
+> Catatan: `withSum('items as total','price')` menjumlahkan harga satuan tanpa dikalikan `qty`, sehingga nilainya bisa berbeda dari kolom `total_price`.
+
+### Query 5 — Filter data melalui relasi
+```php
+Product::whereRelation('category','name','Elektronik')->get()
+```
+![Tinker 5](screenshot/tinker-5.png)
+---
+
 ## 📁 Struktur File Penting
 
 ```
